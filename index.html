@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sequoia Pay – Crypto billing for your SaaS. Without the gas fees.</title>
+    <meta name="description" content="Sequoia Pay lets you accept TRC-20 USDT payments without gas fees. Plug in our Ruby gem and start collecting crypto subscriptions in minutes.">
+    <meta name="author" content="Sequoia Pay">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="assets/favicon.svg" type="image/x-icon">
+    <link rel="apple-touch-icon" href="assets/favicon.svg">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="landing-page">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <div class="beta-badge">
+                    <span class="zap-icon">⚡</span>
+                    Now in Beta
+                </div>
+                
+                <h1 class="hero-title">
+                    Crypto billing for your SaaS.
+                    <span class="gradient-text">Without the gas fees.</span>
+                </h1>
+                
+                <p class="hero-description">
+                    Sequoia Pay lets you accept TRC-20 USDT payments without gas fees. 
+                    Plug in our Ruby gem and start collecting crypto subscriptions in minutes.
+                </p>
+                
+                <div class="hero-actions">
+                    <a href="https://forms.gle/HBULc97d34DyoCTy9" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                        Join the Beta
+                        <span class="arrow-icon">→</span>
+                    </a>
+                    <p class="hero-subtext">🚀 Early access • No credit card required</p>
+                </div>
+                
+                <!-- Code snippet preview -->
+                <div class="code-preview">
+                    <div class="terminal-header">
+                        <div class="terminal-dots">
+                            <span class="dot red"></span>
+                            <span class="dot yellow"></span>
+                            <span class="dot green"></span>
+                        </div>
+                        <span class="terminal-title">ruby</span>
+                    </div>
+                    <div class="code-content">
+                        <div class="code-comment"># Add to your Gemfile</div>
+                        <div class="code-line">gem 'sequoia-pay'</div>
+                        <br>
+                        <div class="code-comment"># Generate payment link</div>
+                        <div class="code-line">SequoiaPay.create_payment(amount: 99.99)</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Benefits Section -->
+        <section class="benefits-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Why developers choose Sequoia Pay</h2>
+                    <p>Built for modern SaaS applications with crypto-native features</p>
+                </div>
+                
+                <div class="benefits-grid">
+                    <div class="benefit-card">
+                        <div class="benefit-icon">🔌</div>
+                        <h3>Integrates in under 15 minutes</h3>
+                        <p>Drop in our Ruby gem and you're ready to accept crypto payments</p>
+                    </div>
+                    
+                    <div class="benefit-card">
+                        <div class="benefit-icon">💳</div>
+                        <h3>Subscriptions and one-time payments</h3>
+                        <p>Handle recurring billing and single purchases with the same API</p>
+                    </div>
+                    
+                    <div class="benefit-card">
+                        <div class="benefit-icon">🌍</div>
+                        <h3>Works globally</h3>
+                        <p>No Stripe or PayPal limitations - accept payments from anywhere</p>
+                    </div>
+                    
+                    <div class="benefit-card">
+                        <div class="benefit-icon">🔒</div>
+                        <h3>Bank-level security</h3>
+                        <p>Enterprise-grade encryption and security protocols</p>
+                    </div>
+                    
+                    <div class="benefit-card">
+                        <div class="benefit-icon">⚡</div>
+                        <h3>Truly gasless transactions</h3>
+                        <p>Zero gas fees for you and your customers</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section class="how-it-works-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>How it works</h2>
+                    <p>Get started with crypto payments in four simple steps</p>
+                </div>
+                
+                <div class="steps-container">
+                    <div class="step">
+                        <div class="step-content">
+                            <div class="step-number">01</div>
+                            <h3>Install the Ruby gem</h3>
+                            <p>Add sequoia-pay to your Gemfile and bundle install</p>
+                        </div>
+                        <div class="step-code">
+                            <code>gem 'sequoia-pay'</code>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-content">
+                            <div class="step-number">02</div>
+                            <h3>Create a pricing plan</h3>
+                            <p>Define your subscription tiers or one-time payment amounts</p>
+                        </div>
+                        <div class="step-code">
+                            <code>SequoiaPay::Plan.create(amount: 29.99, interval: 'monthly')</code>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-content">
+                            <div class="step-number">03</div>
+                            <h3>Share payment link or embed widget</h3>
+                            <p>Generate secure payment URLs or embed our checkout widget</p>
+                        </div>
+                        <div class="step-code">
+                            <code>payment_url = plan.create_checkout_session</code>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-content">
+                            <div class="step-number">04</div>
+                            <h3>Receive USDT directly</h3>
+                            <p>Payments flow directly to your wallet with webhook notifications</p>
+                        </div>
+                        <div class="step-code">
+                            <code># Webhook endpoint receives payment confirmations</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Target Audience Section -->
+        <section class="target-audience-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Who it's for</h2>
+                    <p>Perfect for developers and entrepreneurs building global products</p>
+                </div>
+                
+                <div class="audience-grid">
+                    <div class="audience-card">
+                        <div class="audience-emoji">🚀</div>
+                        <h3>Indie SaaS developers</h3>
+                        <p>Ship global products without payment processor restrictions</p>
+                    </div>
+                    
+                    <div class="audience-card">
+                        <div class="audience-emoji">💼</div>
+                        <h3>Freelancers selling digital products</h3>
+                        <p>Accept payments from clients worldwide with minimal fees</p>
+                    </div>
+                    
+                    <div class="audience-card">
+                        <div class="audience-emoji">🌍</div>
+                        <h3>Startups unable to use Stripe or PayPal</h3>
+                        <p>Launch in restricted markets with crypto-native payments</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why TRC-20 Section -->
+        <section class="why-trc20-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Why TRC-20?</h2>
+                    <p>The most efficient blockchain for business payments</p>
+                </div>
+                
+                <div class="trc20-features">
+                    <div class="trc20-feature">
+                        <div class="feature-icon">💰</div>
+                        <h3>Near-zero fees</h3>
+                        <p>Pay pennies instead of percentage-based fees on transactions</p>
+                    </div>
+                    
+                    <div class="trc20-feature">
+                        <div class="feature-icon">⚡</div>
+                        <h3>High-speed transactions</h3>
+                        <p>Confirmations in seconds, not minutes or hours</p>
+                    </div>
+                    
+                    <div class="trc20-feature">
+                        <div class="feature-icon">👛</div>
+                        <h3>Works with common wallets</h3>
+                        <p>Compatible with TronLink, Trust Wallet, and other popular options</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section class="testimonials-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>What developers are saying</h2>
+                    <p>Join the growing community of developers using Sequoia Pay</p>
+                </div>
+                
+                <div class="testimonials-grid">
+                    <div class="testimonial-card">
+                        <div class="testimonial-emoji">🚀</div>
+                        <blockquote>"We replaced Stripe with Sequoia Pay and started collecting payments from global customers."</blockquote>
+                        <div class="testimonial-author">
+                            <div class="author-name">SaaS Founder</div>
+                            <div class="author-company">Global Analytics Platform</div>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial-card">
+                        <div class="testimonial-emoji">🧠</div>
+                        <blockquote>"I added crypto subscriptions to my AI API in one night."</blockquote>
+                        <div class="testimonial-author">
+                            <div class="author-name">Solo Developer</div>
+                            <div class="author-company">AI-powered Tools</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to Action Section -->
+        <section class="cta-section">
+            <div class="container">
+                <div class="cta-content">
+                    <div class="cta-emoji">🚀</div>
+                    <h2>Ready to join the beta?</h2>
+                    <p>Get early access to Sequoia Pay and start accepting crypto subscriptions with zero friction.</p>
+                    
+                    <a href="https://forms.gle/HBULc97d34DyoCTy9" target="_blank" rel="noopener noreferrer" class="btn btn-cta">
+                        Join the Beta
+                        <span class="arrow-icon">→</span>
+                    </a>
+                    
+                    <p class="cta-subtext">✨ Early access • No credit card required • Join 500+ developers</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer-section">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-brand">
+                        <h3>Sequoia Pay</h3>
+                        <p>Built with love in Tbilisi 🇬🇪</p>
+                    </div>
+                    
+                    <div class="footer-social">
+                        <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="social-link">
+                            <span class="social-icon">📧</span>
+                        </a>
+                        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="social-link">
+                            <span class="social-icon">💼</span>
+                        </a>
+                        <a href="https://t.me" target="_blank" rel="noopener noreferrer" class="social-link">
+                            <span class="social-icon">💬</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-bottom">
+                    <p>&copy; 2025 Sequoia Pay. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html> 

@@ -1,0 +1,40 @@
+{
+  "name": "sequoia-pay-landing",
+  "version": "1.0.0",
+  "description": "Standalone landing page for Sequoia Pay - Crypto billing for your SaaS without gas fees",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve -s . -l 3000",
+    "dev": "npx live-server --port=3000 --open=/",
+    "build": "echo 'Static site - no build required'",
+    "deploy": "npx surge . --domain sequoia-pay-landing.surge.sh",
+    "deploy-netlify": "npx netlify deploy --prod --dir .",
+    "deploy-vercel": "npx vercel --prod"
+  },
+  "keywords": [
+    "crypto",
+    "payments",
+    "trc20",
+    "usdt",
+    "saas",
+    "billing",
+    "blockchain",
+    "gasless",
+    "landing-page"
+  ],
+  "author": "Sequoia Pay Team",
+  "license": "MIT",
+  "homepage": "https://sequoia-pay.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/sequoia-pay-landing.git"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2",
+    "serve": "^14.2.1"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  }
+} 
