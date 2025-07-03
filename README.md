@@ -46,11 +46,17 @@ npm run deploy-vercel
 npm run deploy
 ```
 
-**GitHub Pages:**
+**GitHub Pages (Automatic):**
+1. Push to GitHub repository
+2. GitHub Actions will automatically build and deploy
+3. Go to Settings > Pages and select "GitHub Actions" as source
+4. Your site will be available at `https://sequoiapay.org`
+
+**GitHub Pages (Manual):**
 1. Push to GitHub repository
 2. Go to Settings > Pages
 3. Select source branch
-4. Your site will be available at `https://username.github.io/repo-name`
+4. Your site will be available at `https://sequoiapay.org`
 
 #### Option 3: Traditional Web Hosting
 Simply upload all files to your web hosting provider's public_html or www folder.
@@ -120,6 +126,25 @@ This project has zero runtime dependencies. Development dependencies (optional):
 - `live-server` - Development server with live reload
 - `serve` - Production-ready static file server
 
+## 🚀 Automatic Deployment
+
+This project includes GitHub Actions workflows for automatic deployment:
+
+### GitHub Pages Deployment
+- **File**: `.github/workflows/deploy.yml` (advanced) or `.github/workflows/deploy-simple.yml` (simple)
+- **Trigger**: Push to `master` or `main` branch
+- **Setup**: 
+  1. Go to your repository Settings → Pages
+  2. Select "GitHub Actions" as the source
+  3. Push code to trigger deployment
+
+### Workflow Features
+- ✅ Automatic deployment on push
+- ✅ Node.js setup for future build steps
+- ✅ Static file optimization
+- ✅ Artifact upload and deployment
+- ✅ Support for both simple and advanced configurations
+
 ## 📄 License
 
 MIT License - see LICENSE file for details
@@ -135,9 +160,8 @@ MIT License - see LICENSE file for details
 ## 📞 Support
 
 For questions about Sequoia Pay:
-- Website: https://sequoia-pay.com
-- Email: support@sequoia-pay.com
-- Telegram: @sequoia-pay
+- Website: https://sequoiapay.org
+- Email: support@sequoiapay.org
 
 ---
 

@@ -1,0 +1,61 @@
+name: Deploy Static Site to GitHub Pages
+
+on:
+  push:
+    branches: [ master, main ]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js (optional)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies (if needed)
+        run: |
+          if [ -f package.json ]; then
+            npm ci
+          fi
+
+      - name: Build site
+        run: |
+          # Create build directory
+          mkdir -p _site
+          
+          # Copy all necessary files
+          cp index.html _site/
+          cp style.css _site/
+          cp script.js _site/
+          
+          # Copy assets if they exist
+          if [ -d "assets" ]; then
+            cp -r assets _site/
+          fi
+          
+          # Copy any other static files
+          if [ -f "favicon.ico" ]; then
+            cp favicon.ico _site/
+          fi
+
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./_site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4 
