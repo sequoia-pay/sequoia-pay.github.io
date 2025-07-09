@@ -663,7 +663,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ================================================
-   CONSENT BANNER STYLES
+   ADVANCED CONSENT BANNER V2 STYLES
    ================================================ */
 
 /* Main banner container */
@@ -672,17 +672,33 @@ h1, h2, h3, h4, h5, h6 {
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(0, 0, 0, 0.9);
-  backdrop-filter: blur(10px);
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(12px);
   z-index: 10000;
   transform: translateY(100%);
-  transition: transform 0.3s ease;
-  padding: 1.5rem;
-  box-shadow: 0 -4px 25px rgba(0, 0, 0, 0.2);
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  padding: 2rem 1.5rem 1.5rem;
+  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.3);
+  border-top: 2px solid rgba(59, 130, 246, 0.5);
+  max-height: 80vh;
+  overflow-y: auto;
 }
 
 .consent-banner.show {
   transform: translateY(0);
+}
+
+/* Screen reader only class */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 /* Content container */
@@ -694,41 +710,90 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Header section */
 .consent-header {
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .consent-header h3 {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: 700;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
   color: #ffffff;
+  line-height: 1.3;
 }
 
 .consent-header p {
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: #e2e8f0;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.consent-notice {
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 0.5rem;
+  padding: 0.875rem;
+  margin-top: 1rem;
+}
+
+.consent-notice small {
+  color: #cbd5e1;
   line-height: 1.5;
+}
+
+.consent-notice .consent-link {
+  color: #93c5fd;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.consent-notice .consent-link:hover {
+  color: #dbeafe;
 }
 
 /* Categories grid */
 .consent-categories {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1rem;
-  margin-bottom: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 2.5rem;
 }
 
 .consent-category {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 0.75rem;
-  padding: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 0.875rem;
+  padding: 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
 }
 
 .consent-category:hover {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(59, 130, 246, 0.3);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(59, 130, 246, 0.4);
+  transform: translateY(-1px);
+}
+
+.consent-category.essential {
+  background: rgba(16, 185, 129, 0.1);
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.consent-category.essential:hover {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.5);
+}
+
+.category-examples {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.category-examples small {
+  color: #94a3b8;
+  font-style: italic;
+  line-height: 1.4;
 }
 
 /* Custom checkbox styling */
@@ -759,6 +824,7 @@ h1, h2, h3, h4, h5, h6 {
 .consent-checkbox input[type="checkbox"]:checked + .checkmark {
   background: #3b82f6;
   border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
 }
 
 .consent-checkbox input[type="checkbox"]:checked + .checkmark::after {
@@ -773,9 +839,19 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .consent-checkbox input[type="checkbox"]:disabled + .checkmark {
-  background: #6b7280;
-  border-color: #6b7280;
-  opacity: 0.7;
+  background: #10b981;
+  border-color: #10b981;
+  opacity: 1;
+}
+
+.essential-checkmark {
+  background: #10b981 !important;
+  border-color: #10b981 !important;
+}
+
+.essential-checkmark::after {
+  content: '🔒' !important;
+  font-size: 10px !important;
 }
 
 .category-info {
@@ -804,93 +880,176 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 1.5rem;
 }
 
+.consent-actions .btn {
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 1rem 1.5rem;
+  border-radius: 0.75rem;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-icon {
+  margin-right: 0.5rem;
+  font-size: 0.875rem;
+}
+
 .btn-outline {
   background: transparent;
   color: #e2e8f0;
-  border: 1px solid #64748b;
+  border: 2px solid #64748b;
 }
 
 .btn-outline:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: #94a3b8;
-  transform: translateY(-1px);
+  background: rgba(248, 113, 113, 0.1);
+  border-color: #f87171;
+  color: #fecaca;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(248, 113, 113, 0.2);
 }
 
 .btn-secondary {
   background: #64748b;
   color: white;
+  border: 2px solid #64748b;
 }
 
 .btn-secondary:hover {
   background: #475569;
-  transform: translateY(-1px);
+  border-color: #475569;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(71, 85, 105, 0.3);
 }
 
-/* Footer links */
+.btn-primary:hover {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
+}
+
+/* Action descriptions */
+.consent-action-descriptions {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.consent-action-descriptions small {
+  color: #94a3b8;
+  text-align: center;
+  font-size: 0.8rem;
+}
+
+/* Footer section */
 .consent-footer {
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.consent-links {
   display: flex;
   gap: 2rem;
   justify-content: center;
   flex-wrap: wrap;
-  padding-top: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 1rem;
 }
 
 .consent-link {
   color: #94a3b8;
   text-decoration: none;
   font-size: 0.875rem;
-  transition: color 0.2s ease;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem;
 }
 
 .consent-link:hover {
   color: #e2e8f0;
-  text-decoration: underline;
+  background: rgba(255, 255, 255, 0.1);
+  text-decoration: none;
+}
+
+.consent-metadata {
+  text-align: center;
+  opacity: 0.7;
+  font-size: 0.75rem;
+  color: #64748b;
+  line-height: 1.4;
 }
 
 /* Mobile responsiveness */
 @media (max-width: 768px) {
   .consent-banner {
-    padding: 1rem;
+    padding: 1.5rem 1rem 1rem;
+    max-height: 90vh;
   }
 
   .consent-categories {
     grid-template-columns: 1fr;
-    gap: 0.75rem;
+    gap: 1rem;
+  }
+
+  .consent-category {
+    padding: 1rem;
   }
 
   .consent-actions {
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.875rem;
   }
 
   .consent-actions .btn {
     width: 100%;
     justify-content: center;
+    padding: 1.125rem 1.5rem;
+    font-size: 1rem;
   }
 
-  .consent-footer {
+  .consent-action-descriptions {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+
+  .consent-links {
     flex-direction: column;
     gap: 1rem;
     text-align: center;
   }
 
   .consent-header h3 {
-    font-size: 1.25rem;
+    font-size: 1.4rem;
   }
 
   .consent-header p {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+  }
+
+  .consent-notice {
+    padding: 0.75rem;
   }
 }
 
 @media (max-width: 480px) {
   .consent-banner {
-    padding: 0.75rem;
+    padding: 1rem 0.75rem 0.75rem;
+    max-height: 95vh;
+  }
+
+  .consent-header h3 {
+    font-size: 1.2rem;
+  }
+
+  .consent-header p {
+    font-size: 0.9rem;
   }
 
   .consent-category {
-    padding: 0.75rem;
+    padding: 0.875rem;
   }
 
   .consent-checkbox {
@@ -900,6 +1059,34 @@ h1, h2, h3, h4, h5, h6 {
   .checkmark {
     width: 18px;
     height: 18px;
+  }
+
+  .category-examples {
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+  }
+
+  .consent-actions .btn {
+    padding: 1rem 1.25rem;
+    font-size: 0.95rem;
+  }
+
+  .btn-icon {
+    margin-right: 0.375rem;
+  }
+
+  .consent-links {
+    gap: 0.75rem;
+  }
+
+  .consent-link {
+    padding: 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  .consent-metadata {
+    font-size: 0.7rem;
+    padding: 0 0.5rem;
   }
 }
 

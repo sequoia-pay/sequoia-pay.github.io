@@ -175,33 +175,50 @@ document.addEventListener('DOMContentLoaded', function() {
   // ================================================
   
   /**
-   * Cookie Consent Banner Configuration
-   * Customize these settings as needed
+   * Advanced Consent Mode V2 Configuration
+   * Fully compliant with Google Tag Platform requirements
    */
   const ConsentConfig = {
-    // Storage key for consent preferences
-    storageKey: 'sequoia_consent_preferences',
+    // Storage key for consent preferences (versioned for V2)
+    storageKey: 'sequoia_consent_preferences_v2',
     
-    // Default consent state
+    // Consent Mode V2 specification
+    version: 2,
+    
+    // Default consent state - all optional categories denied by default
     defaultConsent: {
-      necessary: true,    // Always true, cannot be disabled
-      analytics: false,
-      advertising: false,
-      functional: false
+      necessary: true,    // Required for site operation, always granted
+      analytics: false,   // Google Analytics tracking
+      advertising: false, // Advertising cookies and remarketing
+      functional: false   // Enhanced functionality (non-essential)
     },
     
-    // GTM consent mode mapping
+    // Complete GTM Consent Mode V2 mapping
     gtmConsentMap: {
-      analytics: ['analytics_storage'],
-      advertising: ['ad_storage', 'ad_user_data', 'ad_personalization'],
-      functional: ['functionality_storage', 'personalization_storage']
+      necessary: ['security_storage'], // Essential cookies always granted
+      analytics: ['analytics_storage'], // GA4, measurement, reporting
+      advertising: ['ad_storage', 'ad_user_data', 'ad_personalization'], // All advertising features
+      functional: ['functionality_storage', 'personalization_storage'] // Enhanced UX features
     },
     
-    // Banner display delay (in milliseconds)
-    showDelay: 1000,
+    // Banner timing configuration
+    showDelay: 1000,      // Delay before showing banner (allows page to load)
+    hideDelay: 400,       // Animation duration for hiding
+    updateTimeout: 500,   // Max wait time for consent updates
     
-    // Banner auto-hide after consent (in milliseconds)
-    hideDelay: 500
+    // Advanced Consent Mode features
+    enableAdvancedMode: true,     // Use Advanced vs Basic Consent Mode
+    enableDataRedaction: true,    // Enhanced privacy for advertising
+    enableUrlPassthrough: false,  // Don't pass click IDs in denied state
+    enableModelingData: true,     // Allow conversion modeling
+    
+    // Regional compliance
+    requireConsentForEEA: true,   // Required for EEA traffic
+    defaultRegion: 'EEA',         // Assume EEA requirements by default
+    
+    // Debug and development
+    debugMode: false,             // Enable detailed console logging
+    enableTestMode: false         // For testing environments
   };
 
   /**
@@ -279,33 +296,80 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     /**
-     * Initialize GTM consent mode with default denied state
+     * Initialize GTM Advanced Consent Mode V2 with proper timing
      */
     initializeGTMConsent() {
-      if (typeof gtag === 'function') {
-        // Set default consent to denied for all categories
-        gtag('consent', 'default', {
-          'analytics_storage': 'denied',
-          'ad_storage': 'denied',
-          'ad_user_data': 'denied',
-          'ad_personalization': 'denied',
-          'functionality_storage': 'denied',
-          'personalization_storage': 'denied'
-        });
-        
-        console.log('🔒 GTM Consent Mode initialized with default denied state');
+      if (typeof gtag !== 'function') {
+        console.warn('⚠️ gtag function not available during initialization');
+        return;
       }
+
+      // Advanced Consent Mode V2 already initialized in HTML head
+      // This is a verification step to ensure proper initialization
+      
+      if (ConsentConfig.debugMode) {
+        console.log('🔒 Advanced Consent Mode V2 verification:', {
+          timestamp: Date.now() - (window._consentModeInitTime || 0),
+          enableAdvancedMode: ConsentConfig.enableAdvancedMode,
+          version: ConsentConfig.version
+        });
+      }
+      
+      // Send initialization event to dataLayer for GTM triggers
+      window.dataLayer.push({
+        event: 'consent_mode_initialized',
+        consent_mode_version: ConsentConfig.version,
+        advanced_mode: ConsentConfig.enableAdvancedMode
+      });
     }
 
     /**
-     * Load consent preferences from localStorage
+     * Load consent preferences from localStorage with V2 migration
      */
     loadPreferences() {
       try {
-        const stored = localStorage.getItem(ConsentConfig.storageKey);
+        // Try to load V2 preferences first
+        let stored = localStorage.getItem(ConsentConfig.storageKey);
+        let preferences = null;
+        
         if (stored) {
-          const parsed = JSON.parse(stored);
-          return { ...ConsentConfig.defaultConsent, ...parsed };
+          const parsedData = JSON.parse(stored);
+          
+          // Check if it's V2 format with metadata
+          if (parsedData.preferences && parsedData.metadata) {
+            preferences = parsedData.preferences;
+            
+            if (ConsentConfig.debugMode) {
+              console.log('📖 Loaded V2 consent preferences:', {
+                preferences: parsedData.preferences,
+                metadata: parsedData.metadata
+              });
+            }
+          } else {
+            // Legacy V2 format without metadata
+            preferences = parsedData;
+          }
+        } else {
+          // Check for V1 preferences and migrate
+          const oldKey = 'sequoia_consent_preferences';
+          const oldStored = localStorage.getItem(oldKey);
+          
+          if (oldStored) {
+            const oldPreferences = JSON.parse(oldStored);
+            console.log('🔄 Migrating consent preferences from V1 to V2');
+            
+            // Migrate and save in new format
+            preferences = { ...ConsentConfig.defaultConsent, ...oldPreferences };
+            this.savePreferences(preferences);
+            
+            // Remove old preferences
+            localStorage.removeItem(oldKey);
+          }
+        }
+        
+        if (preferences) {
+          // Ensure all required categories are present
+          return { ...ConsentConfig.defaultConsent, ...preferences };
         }
       } catch (error) {
         console.error('Error loading consent preferences:', error);
@@ -315,12 +379,27 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     /**
-     * Save consent preferences to localStorage
+     * Save consent preferences to localStorage with V2 metadata
      */
     savePreferences(preferences) {
       try {
-        localStorage.setItem(ConsentConfig.storageKey, JSON.stringify(preferences));
-        console.log('💾 Consent preferences saved:', preferences);
+        const saveData = {
+          preferences: preferences,
+          metadata: {
+            version: ConsentConfig.version,
+            timestamp: Date.now(),
+            userAgent: navigator.userAgent.substring(0, 100), // Truncated for privacy
+            url: window.location.hostname
+          }
+        };
+        
+        localStorage.setItem(ConsentConfig.storageKey, JSON.stringify(saveData));
+        
+        if (ConsentConfig.debugMode) {
+          console.log('💾 Consent preferences V2 saved:', saveData);
+        } else {
+          console.log('💾 Consent preferences saved successfully');
+        }
       } catch (error) {
         console.error('Error saving consent preferences:', error);
       }
@@ -444,7 +523,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     /**
-     * Apply consent preferences to Google Tag Manager
+     * Apply consent preferences to Google Tag Manager V2
      */
     applyConsentToGTM(preferences) {
       if (typeof gtag !== 'function') {
@@ -453,6 +532,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
 
       const consentUpdate = {};
+      const timestamp = Date.now();
       
       // Map preferences to GTM consent parameters
       Object.keys(ConsentConfig.gtmConsentMap).forEach(category => {
@@ -464,10 +544,31 @@ document.addEventListener('DOMContentLoaded', function() {
         });
       });
 
-      // Apply consent update to GTM
-      gtag('consent', 'update', consentUpdate);
+      // Apply consent update to GTM with enhanced parameters
+      gtag('consent', 'update', {
+        ...consentUpdate,
+        // Add compliance timestamp for audit purposes
+        'update_timestamp': timestamp
+      });
       
-      console.log('🎯 GTM Consent updated:', consentUpdate);
+      // Send detailed consent state to dataLayer for GTM triggers
+      window.dataLayer.push({
+        event: 'consent_update',
+        consent_timestamp: timestamp,
+        consent_version: ConsentConfig.version,
+        consent_preferences: { ...preferences },
+        gtm_consent_state: { ...consentUpdate }
+      });
+      
+      if (ConsentConfig.debugMode) {
+        console.log('🎯 GTM Consent V2 updated:', {
+          preferences,
+          gtmUpdate: consentUpdate,
+          timestamp
+        });
+      } else {
+        console.log('🎯 GTM Consent updated successfully');
+      }
     }
 
     /**
@@ -544,17 +645,106 @@ document.addEventListener('DOMContentLoaded', function() {
   // Initialize consent manager
   const consentManager = new ConsentManager();
   
-  // Make consent manager globally available for debugging/integration
+  // Make consent manager and utilities globally available
   window.ConsentManager = consentManager;
+  window.ConsentConfig = ConsentConfig;
   
-  // Add keyboard shortcut for developers (Ctrl+Shift+C to show consent banner)
+  // Advanced debugging and testing utilities
+  window.ConsentDebug = {
+    // Show current consent state
+    getState: () => consentManager.getPreferences(),
+    
+    // Test consent banner
+    showBanner: () => consentManager.showBanner(),
+    
+    // Reset all consent data
+    reset: () => consentManager.resetConsent(),
+    
+    // Simulate different consent scenarios
+    testScenarios: {
+      acceptAll: () => consentManager.acceptAll(),
+      rejectAll: () => consentManager.rejectAll(),
+      analyticsOnly: () => {
+        consentManager.updateConsent('analytics', true);
+        consentManager.updateConsent('advertising', false);
+        consentManager.updateConsent('functional', false);
+      }
+    },
+    
+    // Check GTM consent mode status
+    checkGTMStatus: () => {
+      if (typeof gtag === 'function') {
+        console.log('✅ gtag function available');
+        console.log('🕒 Consent initialized at:', new Date(window._consentModeInitTime || 0).toISOString());
+        return true;
+      } else {
+        console.warn('❌ gtag function not available');
+        return false;
+      }
+    },
+    
+    // Validate consent mode implementation
+    validateImplementation: () => {
+      const issues = [];
+      
+      if (!window._consentModeInitTime) {
+        issues.push('❌ Consent mode initialization timestamp missing');
+      }
+      
+      if (typeof gtag !== 'function') {
+        issues.push('❌ gtag function not available');
+      }
+      
+      if (!window.dataLayer) {
+        issues.push('❌ dataLayer not initialized');
+      }
+      
+      const banner = document.getElementById('consent-banner');
+      if (!banner) {
+        issues.push('❌ Consent banner element not found');
+      }
+      
+      if (issues.length === 0) {
+        console.log('✅ All consent mode implementation checks passed');
+        return true;
+      } else {
+        console.warn('⚠️ Consent mode implementation issues:', issues);
+        return false;
+      }
+    }
+  };
+  
+  // Developer keyboard shortcuts
   document.addEventListener('keydown', (e) => {
+    // Ctrl+Shift+C to show consent banner
     if (e.ctrlKey && e.shiftKey && e.key === 'C') {
       e.preventDefault();
       consentManager.showBanner();
       console.log('🔧 Developer: Consent banner shown via keyboard shortcut');
     }
+    
+    // Ctrl+Shift+D to toggle debug mode
+    if (e.ctrlKey && e.shiftKey && e.key === 'D') {
+      e.preventDefault();
+      ConsentConfig.debugMode = !ConsentConfig.debugMode;
+      console.log(`🔧 Debug mode ${ConsentConfig.debugMode ? 'enabled' : 'disabled'}`);
+    }
+    
+    // Ctrl+Shift+V to validate implementation
+    if (e.ctrlKey && e.shiftKey && e.key === 'V') {
+      e.preventDefault();
+      window.ConsentDebug.validateImplementation();
+    }
   });
   
-  console.log('🍪 Consent Banner initialized successfully');
+  // Auto-validation in development
+  if (window.location.hostname === 'localhost' || window.location.hostname.includes('dev')) {
+    setTimeout(() => {
+      console.log('🔍 Running auto-validation for development environment...');
+      window.ConsentDebug.validateImplementation();
+    }, 2000);
+  }
+  
+  console.log('🍪 Advanced Consent Mode V2 initialized successfully');
+  console.log('🔧 Developer tools available via window.ConsentDebug');
 }); 

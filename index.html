@@ -4,28 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- Google Tag Manager with Consent Mode -->
+    <!-- Google Tag Manager with Advanced Consent Mode V2 -->
     <script>
-      // Initialize dataLayer
+      // Initialize dataLayer before any other scripts
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       
       // Set default consent to denied for all categories (GDPR compliance)
+      // This MUST happen before GTM loads to ensure proper Advanced Consent Mode
       gtag('consent', 'default', {
+        // Core consent mode V2 parameters
         'analytics_storage': 'denied',
         'ad_storage': 'denied',
         'ad_user_data': 'denied',
         'ad_personalization': 'denied',
+        
+        // Additional storage types
         'functionality_storage': 'denied',
-        'personalization_storage': 'denied'
+        'personalization_storage': 'denied',
+        'security_storage': 'granted', // Usually granted as essential for site function
+        
+        // Wait for user interaction before sending data
+        'wait_for_update': 500,
+        
+        // Enable Advanced Consent Mode features
+        'ads_data_redaction': true,
+        'url_passthrough': false
       });
       
-      // Load GTM
+      // Load GTM after consent defaults are set
       (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
       new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
       j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
       })(window,document,'script','dataLayer','GTM-MGGMRJSH');
+      
+      // Store the initial timestamp for consent measurement
+      window._consentModeInitTime = Date.now();
     </script>
     <!-- End Google Tag Manager -->
     
@@ -352,75 +367,140 @@
         </footer>
     </div>
 
-    <!-- Consent Banner -->
-    <div id="consent-banner" class="consent-banner" style="display: none;">
+    <!-- Advanced Consent Banner V2 -->
+    <div id="consent-banner" class="consent-banner" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="consent-title" aria-describedby="consent-description">
         <div class="consent-content">
             <div class="consent-header">
-                <h3>🍪 We use cookies to improve your experience on our site.</h3>
-                <p>Please select the categories you consent to:</p>
-            </div>
-            
-            <div class="consent-categories">
-                <div class="consent-category">
-                    <label class="consent-checkbox">
-                        <input type="checkbox" id="consent-necessary" checked disabled>
-                        <span class="checkmark"></span>
-                        <div class="category-info">
-                            <strong>Necessary</strong>
-                            <small>Required for site operation</small>
-                        </div>
-                    </label>
-                </div>
-                
-                <div class="consent-category">
-                    <label class="consent-checkbox">
-                        <input type="checkbox" id="consent-analytics">
-                        <span class="checkmark"></span>
-                        <div class="category-info">
-                            <strong>Analytics</strong>
-                            <small>Help us understand how the site is used</small>
-                        </div>
-                    </label>
-                </div>
-                
-                <div class="consent-category">
-                    <label class="consent-checkbox">
-                        <input type="checkbox" id="consent-advertising">
-                        <span class="checkmark"></span>
-                        <div class="category-info">
-                            <strong>Advertising</strong>
-                            <small>For personalized advertising</small>
-                        </div>
-                    </label>
-                </div>
-                
-                <div class="consent-category">
-                    <label class="consent-checkbox">
-                        <input type="checkbox" id="consent-functional">
-                        <span class="checkmark"></span>
-                        <div class="category-info">
-                            <strong>Functional</strong>
-                            <small>Improve site functionality</small>
-                        </div>
-                    </label>
+                <h3 id="consent-title">🍪 We use cookies and similar technologies</h3>
+                <p id="consent-description">
+                    We use cookies and similar technologies to improve your experience, analyze site usage, and assist with marketing efforts. 
+                    You can choose which categories you're comfortable with. Your choice will be remembered for future visits.
+                </p>
+                <div class="consent-notice">
+                    <small>
+                        <strong>Essential cookies</strong> are always enabled for core site functionality. 
+                        <a href="#" class="consent-link" id="learn-more-link">Learn more about our cookie policy</a>
+                    </small>
                 </div>
             </div>
             
-            <div class="consent-actions">
-                <button type="button" class="btn btn-outline" id="consent-reject-all">
-                    Decline all
+            <div class="consent-categories" role="group" aria-labelledby="consent-categories-title">
+                <h4 id="consent-categories-title" class="sr-only">Cookie Categories</h4>
+                
+                <div class="consent-category essential">
+                    <label class="consent-checkbox">
+                        <input type="checkbox" id="consent-necessary" checked disabled aria-describedby="necessary-desc">
+                        <span class="checkmark essential-checkmark"></span>
+                        <div class="category-info">
+                            <strong>Essential Cookies</strong>
+                            <small id="necessary-desc">
+                                Required for core site functionality, security, and legal compliance. These cannot be disabled.
+                            </small>
+                        </div>
+                    </label>
+                    <div class="category-examples">
+                        <small>Examples: Session management, security tokens, CSRF protection</small>
+                    </div>
+                </div>
+                
+                <div class="consent-category">
+                    <label class="consent-checkbox">
+                        <input type="checkbox" id="consent-analytics" aria-describedby="analytics-desc">
+                        <span class="checkmark"></span>
+                        <div class="category-info">
+                            <strong>Analytics & Performance</strong>
+                            <small id="analytics-desc">
+                                Help us understand how visitors interact with our site to improve user experience and performance.
+                            </small>
+                        </div>
+                    </label>
+                    <div class="category-examples">
+                        <small>Examples: Google Analytics, page views, user journeys, performance monitoring</small>
+                    </div>
+                </div>
+                
+                <div class="consent-category">
+                    <label class="consent-checkbox">
+                        <input type="checkbox" id="consent-advertising" aria-describedby="advertising-desc">
+                        <span class="checkmark"></span>
+                        <div class="category-info">
+                            <strong>Advertising & Marketing</strong>
+                            <small id="advertising-desc">
+                                Enable personalized advertising, retargeting, and marketing measurement across platforms.
+                            </small>
+                        </div>
+                    </label>
+                    <div class="category-examples">
+                        <small>Examples: Google Ads, Facebook Pixel, remarketing lists, conversion tracking</small>
+                    </div>
+                </div>
+                
+                <div class="consent-category">
+                    <label class="consent-checkbox">
+                        <input type="checkbox" id="consent-functional" aria-describedby="functional-desc">
+                        <span class="checkmark"></span>
+                        <div class="category-info">
+                            <strong>Functional & Preferences</strong>
+                            <small id="functional-desc">
+                                Remember your preferences and settings to provide enhanced, personalized functionality.
+                            </small>
+                        </div>
+                    </label>
+                    <div class="category-examples">
+                        <small>Examples: Language preferences, theme settings, form auto-complete, chat widgets</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="consent-actions" role="group" aria-label="Cookie consent actions">
+                <button type="button" class="btn btn-outline" id="consent-reject-all" 
+                        aria-describedby="reject-description">
+                    <span class="btn-icon">❌</span>
+                    Decline Optional
                 </button>
-                <button type="button" class="btn btn-secondary" id="consent-save-selection">
-                    Save selection
+                <button type="button" class="btn btn-secondary" id="consent-save-selection"
+                        aria-describedby="save-description">
+                    <span class="btn-icon">💾</span>
+                    Save My Choices
                 </button>
-                <button type="button" class="btn btn-primary" id="consent-accept-all">
-                    Accept all
+                <button type="button" class="btn btn-primary" id="consent-accept-all"
+                        aria-describedby="accept-description">
+                    <span class="btn-icon">✅</span>
+                    Accept All
                 </button>
+            </div>
+            
+            <!-- Action descriptions for screen readers -->
+            <div class="consent-action-descriptions" aria-hidden="true">
+                <small id="reject-description">Only essential cookies will be used</small>
+                <small id="save-description">Save your custom cookie preferences</small>
+                <small id="accept-description">Allow all cookies and similar technologies</small>
             </div>
             
             <div class="consent-footer">
-                <a href="#" class="consent-link" id="consent-settings">⚙️ Cookie settings</a>
-                <a href="#" class="consent-link">📋 Privacy policy</a>
+                <div class="consent-links">
+                    <a href="#" class="consent-link" id="consent-settings" 
+                       aria-label="Manage cookie preferences">
+                        ⚙️ Manage Preferences
+                    </a>
+                    <a href="#" class="consent-link" 
+                       aria-label="Read our privacy policy"
+                       target="_blank" rel="noopener noreferrer">
+                        📋 Privacy Policy
+                    </a>
+                    <a href="#" class="consent-link"
+                       aria-label="Learn about cookies"
+                       target="_blank" rel="noopener noreferrer">
+                        ℹ️ About Cookies
+                    </a>
+                </div>
+                
+                <div class="consent-metadata">
+                    <small>
+                        Powered by Advanced Consent Mode V2 | 
+                        Your data is processed according to GDPR and ePrivacy regulations
+                    </small>
+                </div>
             </div>
         </div>
     </div>
