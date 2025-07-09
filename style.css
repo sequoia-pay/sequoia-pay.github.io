@@ -645,19 +645,276 @@ h1, h2, h3, h4, h5, h6 {
   .container {
     padding: 0 0.5rem;
   }
-  
+
   .hero-title {
     font-size: 2.5rem;
   }
-  
+
   .section-header h2 {
     font-size: 2rem;
   }
-  
+
   .benefit-card,
   .audience-card,
   .trc20-feature,
   .testimonial-card {
     padding: 1.5rem;
   }
+}
+
+/* ================================================
+   CONSENT BANNER STYLES
+   ================================================ */
+
+/* Main banner container */
+.consent-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(10px);
+  z-index: 10000;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+  padding: 1.5rem;
+  box-shadow: 0 -4px 25px rgba(0, 0, 0, 0.2);
+}
+
+.consent-banner.show {
+  transform: translateY(0);
+}
+
+/* Content container */
+.consent-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  color: white;
+}
+
+/* Header section */
+.consent-header {
+  margin-bottom: 1.5rem;
+}
+
+.consent-header h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+}
+
+.consent-header p {
+  font-size: 0.95rem;
+  color: #e2e8f0;
+  line-height: 1.5;
+}
+
+/* Categories grid */
+.consent-categories {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.consent-category {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.2s ease;
+}
+
+.consent-category:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+/* Custom checkbox styling */
+.consent-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.consent-checkbox input[type="checkbox"] {
+  display: none;
+}
+
+.checkmark {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: 2px solid #64748b;
+  background: transparent;
+  flex-shrink: 0;
+  margin-top: 2px;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.consent-checkbox input[type="checkbox"]:checked + .checkmark {
+  background: #3b82f6;
+  border-color: #3b82f6;
+}
+
+.consent-checkbox input[type="checkbox"]:checked + .checkmark::after {
+  content: '✓';
+  position: absolute;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.consent-checkbox input[type="checkbox"]:disabled + .checkmark {
+  background: #6b7280;
+  border-color: #6b7280;
+  opacity: 0.7;
+}
+
+.category-info {
+  flex: 1;
+}
+
+.category-info strong {
+  font-weight: 600;
+  color: #ffffff;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.category-info small {
+  font-size: 0.8rem;
+  color: #cbd5e1;
+  line-height: 1.4;
+}
+
+/* Action buttons */
+.consent-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.btn-outline {
+  background: transparent;
+  color: #e2e8f0;
+  border: 1px solid #64748b;
+}
+
+.btn-outline:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #94a3b8;
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: #64748b;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background: #475569;
+  transform: translateY(-1px);
+}
+
+/* Footer links */
+.consent-footer {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.consent-link {
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: color 0.2s ease;
+}
+
+.consent-link:hover {
+  color: #e2e8f0;
+  text-decoration: underline;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .consent-banner {
+    padding: 1rem;
+  }
+
+  .consent-categories {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .consent-actions {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .consent-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .consent-footer {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .consent-header h3 {
+    font-size: 1.25rem;
+  }
+
+  .consent-header p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .consent-banner {
+    padding: 0.75rem;
+  }
+
+  .consent-category {
+    padding: 0.75rem;
+  }
+
+  .consent-checkbox {
+    gap: 0.5rem;
+  }
+
+  .checkmark {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* Animation for banner entrance */
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.consent-banner.animate-in {
+  animation: slideUp 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 } 

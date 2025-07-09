@@ -4,12 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-MGGMRJSH');</script>
+    <!-- Google Tag Manager with Consent Mode -->
+    <script>
+      // Initialize dataLayer
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      
+      // Set default consent to denied for all categories (GDPR compliance)
+      gtag('consent', 'default', {
+        'analytics_storage': 'denied',
+        'ad_storage': 'denied',
+        'ad_user_data': 'denied',
+        'ad_personalization': 'denied',
+        'functionality_storage': 'denied',
+        'personalization_storage': 'denied'
+      });
+      
+      // Load GTM
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-MGGMRJSH');
+    </script>
     <!-- End Google Tag Manager -->
     
     <title>Sequoia Pay – Crypto billing for your SaaS. Without the gas fees.</title>
@@ -333,6 +350,79 @@
                 </div>
             </div>
         </footer>
+    </div>
+
+    <!-- Consent Banner -->
+    <div id="consent-banner" class="consent-banner" style="display: none;">
+        <div class="consent-content">
+            <div class="consent-header">
+                <h3>🍪 We use cookies to improve your experience on our site.</h3>
+                <p>Please select the categories you consent to:</p>
+            </div>
+            
+            <div class="consent-categories">
+                <div class="consent-category">
+                    <label class="consent-checkbox">
+                        <input type="checkbox" id="consent-necessary" checked disabled>
+                        <span class="checkmark"></span>
+                        <div class="category-info">
+                            <strong>Necessary</strong>
+                            <small>Required for site operation</small>
+                        </div>
+                    </label>
+                </div>
+                
+                <div class="consent-category">
+                    <label class="consent-checkbox">
+                        <input type="checkbox" id="consent-analytics">
+                        <span class="checkmark"></span>
+                        <div class="category-info">
+                            <strong>Analytics</strong>
+                            <small>Help us understand how the site is used</small>
+                        </div>
+                    </label>
+                </div>
+                
+                <div class="consent-category">
+                    <label class="consent-checkbox">
+                        <input type="checkbox" id="consent-advertising">
+                        <span class="checkmark"></span>
+                        <div class="category-info">
+                            <strong>Advertising</strong>
+                            <small>For personalized advertising</small>
+                        </div>
+                    </label>
+                </div>
+                
+                <div class="consent-category">
+                    <label class="consent-checkbox">
+                        <input type="checkbox" id="consent-functional">
+                        <span class="checkmark"></span>
+                        <div class="category-info">
+                            <strong>Functional</strong>
+                            <small>Improve site functionality</small>
+                        </div>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="consent-actions">
+                <button type="button" class="btn btn-outline" id="consent-reject-all">
+                    Decline all
+                </button>
+                <button type="button" class="btn btn-secondary" id="consent-save-selection">
+                    Save selection
+                </button>
+                <button type="button" class="btn btn-primary" id="consent-accept-all">
+                    Accept all
+                </button>
+            </div>
+            
+            <div class="consent-footer">
+                <a href="#" class="consent-link" id="consent-settings">⚙️ Cookie settings</a>
+                <a href="#" class="consent-link">📋 Privacy policy</a>
+            </div>
+        </div>
     </div>
 
     <!-- JavaScript -->
